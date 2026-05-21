@@ -11,13 +11,11 @@ WEATHERLY is a minimalist static weather lookup app built with HTML, CSS, and va
 ## Setup
 
 1. Create an OpenWeatherMap API key at https://openweathermap.org/api.
-2. Open `script.js` and replace the empty `OPENWEATHER_API_KEY` value with your key:
+2. Open `index.html` in a browser to use the app locally.
 
-```js
-const OPENWEATHER_API_KEY = "YOUR_API_KEY_HERE";
-```
-
-3. Open `index.html` in a browser to use the app locally.
+3. Enter your OpenWeatherMap API key directly in the app UI when prompted.
+	- The app includes an "OpenWeatherMap API Key" field in the form.
+	- Optionally check **Remember key in this browser** to store the key in your browser's `localStorage` (convenient but less secure).
 
 ## Usage
 
@@ -33,4 +31,4 @@ const OPENWEATHER_API_KEY = "YOUR_API_KEY_HERE";
 
 ## Important note about API keys
 
-GitHub Pages is a static host and cannot securely hide API keys. Keep your key out of the repo by using a restricted free tier key or by replacing the key in `script.js` only after cloning locally. Do not commit your personal API key to source control.
+GitHub Pages is a static host and cannot securely hide API keys. Entering the key in the browser is convenient but the key may be visible in the client (and if you choose to remember it, it is stored in the browser). Keep your key out of the repo and use a restricted free-tier key with domain restrictions where possible. Do not commit your personal API key to source control.

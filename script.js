@@ -1,8 +1,8 @@
-const OPENWEATHER_API_KEY = "";
-
 const form = document.getElementById("weather-form");
 const cityInput = document.getElementById("city");
 const countryInput = document.getElementById("country");
+const apiKeyInput = document.getElementById("apiKey");
+const rememberKeyInput = document.getElementById("rememberKey");
 const messageEl = document.getElementById("message");
 const resultSection = document.getElementById("weather-result");
 const locationEl = document.getElementById("location");
@@ -11,6 +11,17 @@ const temperatureEl = document.getElementById("temperature");
 const humidityEl = document.getElementById("humidity");
 const windEl = document.getElementById("wind");
 const iconEl = document.getElementById("weather-icon");
+
+// Populate saved API key from localStorage (optional convenience)
+try {
+  const saved = localStorage.getItem("WEATHERLY_OPENWEATHER_KEY");
+  if (saved && apiKeyInput) {
+    apiKeyInput.value = saved;
+    if (rememberKeyInput) rememberKeyInput.checked = true;
+  }
+} catch (err) {
+  // ignore localStorage errors (e.g. privacy mode)
+}
 
 function showMessage(text, type = "info") {
   messageEl.textContent = text;
@@ -63,9 +74,11 @@ function updateWeather(data) {
   showResult();
 }
 
-async function fetchWeather(query) {
+async function fetchWeather(query, apiKey) {
   const endpoint = "https://api.openweathermap.org/data/2.5/weather";
-  const url = `${endpoint}?q=${encodeURIComponent(query)}&units=metric&appid=${OPENWEATHER_API_KEY}`;
+  const url = `${endpoint}?q=${encodeURIComponent(query)}&units=metric&appid=${encodeURIComponent(
+    apiKey
+  )}`;
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -91,18 +104,27 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
-  if (!OPENWEATHER_API_KEY) {
-    showMessage(
-      "Add your OpenWeatherMap API key to script.js before using WEATHERLY.",
-      "error"
-    );
+  const apiKey = apiKeyInput?.value?.trim();
+  if (!apiKey) {
+    showMessage("Please provide your OpenWeatherMap API key in the form.", "error");
     return;
   }
 
   showMessage("Loading weather…");
 
   try {
-    const weatherData = await fetchWeather(query);
+    // Persist key in localStorage if requested
+    try {
+      if (rememberKeyInput?.checked) {
+        localStorage.setItem("WEATHERLY_OPENWEATHER_KEY", apiKey);
+      } else {
+        localStorage.removeItem("WEATHERLY_OPENWEATHER_KEY");
+      }
+    } catch (err) {
+      // ignore storage errors
+    }
+
+    const weatherData = await fetchWeather(query, apiKey);
     updateWeather(weatherData);
     showMessage("");
   } catch (error) {
