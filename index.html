@@ -43,6 +43,20 @@
               />
             </div>
 
+            <div class="field-row">
+              <label for="apiKey">OpenWeatherMap API Key</label>
+              <input
+                id="apiKey"
+                name="apiKey"
+                type="password"
+                placeholder="Enter API key (will not be committed)"
+                autocomplete="off"
+              />
+              <label style="font-size:0.9rem; color:#67768b; margin-top:6px;">
+                <input id="rememberKey" type="checkbox" /> Remember key in this browser
+              </label>
+            </div>
+
             <button type="submit" class="primary-button">Get Weather</button>
             <p class="message" id="message" aria-live="polite"></p>
           </form>
